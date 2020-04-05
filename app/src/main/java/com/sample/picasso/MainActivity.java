@@ -17,14 +17,22 @@ import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.sample.picasso.Adapter.WidgetAdapter;
 import com.sample.picasso.Helper.PublicConstants;
+import com.sample.picasso.Model.Widget;
 import com.sample.picasso.secret.SettingsActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
 
-
+    List<Widget> widgetList = new ArrayList<>();
+    RecyclerView mainRecyclerView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,10 +62,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        widgetList.add(new Widget(0,"Actionbar"));
+        widgetList.add(new Widget(2,"Alert Dialog"));
+        widgetList.add(new Widget(0,"Animations"));
+        widgetList.add(new Widget(1,"Appbar and Tab"));
+        widgetList.add(new Widget(2,"Custom Dialog"));
+        widgetList.add(new Widget(1,"External Libraries"));
+        widgetList.add(new Widget(2,"Menu"));
+        widgetList.add(new Widget(2,"Navigation Drawer"));
+        widgetList.add(new Widget(1,"Snackbar"));
+        widgetList.add(new Widget(1,"Toast"));
+
+        mainRecyclerView = findViewById(R.id.mainRecyclerView);
+        mainRecyclerView.setHasFixedSize(true);
+        mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mainRecyclerView.setAdapter(new WidgetAdapter(this,widgetList));
 
 
 
-        showAdDialog();
+        if(!appDataPref.contains(PublicConstants.appDataPref_isAdBannerShown))
+        {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    showAdDialog();
+
+                }
+            },2000);
+        }
 
     }
 
@@ -76,43 +109,35 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             finish();
         }
+        else if(menuItemId ==  R.id.actionbarDonate)
+        {
+            showAdDialog();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     private void showAdDialog() {
 
-        SharedPreferences appDataPref = getSharedPreferences(PublicConstants.appDataPref, Context.MODE_PRIVATE);
-        if(!appDataPref.contains(PublicConstants.appDataPref_isAdBannerShown))
-        {
-            final Dialog contributionDialog =  new Dialog(this);
-            contributionDialog.setCancelable(true);
-            contributionDialog.setCanceledOnTouchOutside(true);
-            contributionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            contributionDialog.setContentView(R.layout.dialog_ad);
-            contributionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            contributionDialog.getWindow().getAttributes().windowAnimations = R.style.BottomUpSlideDialogAnimation;
+        final Dialog contributionDialog =  new Dialog(this);
+        contributionDialog.setCancelable(true);
+        contributionDialog.setCanceledOnTouchOutside(true);
+        contributionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        contributionDialog.setContentView(R.layout.dialog_ad);
+        contributionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        contributionDialog.getWindow().getAttributes().windowAnimations = R.style.BottomUpSlideDialogAnimation;
 
-            Window window = contributionDialog.getWindow();
-            window.setGravity(Gravity.CENTER);
-            window.setLayout(GridLayout.LayoutParams.WRAP_CONTENT, GridLayout.LayoutParams.WRAP_CONTENT);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.setDimAmount(0.75f);
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Window window = contributionDialog.getWindow();
+        window.setGravity(Gravity.CENTER);
+        window.setLayout(GridLayout.LayoutParams.WRAP_CONTENT, GridLayout.LayoutParams.WRAP_CONTENT);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window.setDimAmount(0.75f);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    contributionDialog.show();
-
-                }
-            },2000);
-
-            SharedPreferences.Editor appDataPrefEditor = appDataPref.edit();
-            appDataPrefEditor.putBoolean(PublicConstants.appDataPref_isAdBannerShown,true);
-            appDataPrefEditor.commit();
-        }
+        contributionDialog.show();
+        SharedPreferences appDataPref = getSharedPreferences(PublicConstants.appDataPref,Context.MODE_PRIVATE);
+        SharedPreferences.Editor appDataPrefEditor = appDataPref.edit();
+        appDataPrefEditor.putBoolean(PublicConstants.appDataPref_isAdBannerShown,true);
+        appDataPrefEditor.commit();
 
     }
 

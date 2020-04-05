@@ -12,6 +12,7 @@
         <item name="colorMedium">@color/colormedium</item>
         <item name="colorLow">@color/colorlow</item>
         <item name="colorIcon">@color/colorIcon</item>
+        <item name="colorDialog">@color/colorDialogBackground</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -25,6 +26,7 @@
         <item name="colorMedium">@color/darkmedium</item>
         <item name="colorLow">@color/darklow</item>
         <item name="colorIcon">@color/darkIcon</item>
+        <item name="colorDialog">@color/darkDialogBackground</item>
     </style>
 
 

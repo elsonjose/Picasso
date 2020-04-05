@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:icon="@drawable/ic_favorite"
+        android:id="@+id/actionbarDonate"
+        app:showAsAction="always"
+        android:title="Donate" />
+
     <item android:icon="@drawable/ic_settings"
         android:id="@+id/actionbarSettings"
         app:showAsAction="always"

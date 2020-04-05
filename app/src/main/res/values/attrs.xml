@@ -7,6 +7,7 @@
         <attr name="colorMedium" format="color"/>
         <attr name="colorLow" format="color"/>
         <attr name="colorIcon" format="color"/>
+        <attr name="colorDialog" format="color"/>
 
     </declare-styleable>
 </resources>
